@@ -104,3 +104,141 @@ const filmy = [
 		premiera: '2022-12-24',
 	},
 ]
+// Funkce pro zjištění filmu na základě location.hash
+function zjistitFilm() {
+	// Získání hash z URL a odříznutí znaku #
+	const hash = location.hash.slice(1);
+	
+	// Vyhledání filmu podle ID
+	const film = filmy.find(film => film.id === hash);
+	
+	// Pokud film existuje, vrátíme ho, jinak vrátíme zprávu, že film nebyl nalezen
+	if (film) {
+	  return film;
+	} else {
+	  return 'Film nebyl nalezen';
+	}}  
+	// Použití metody find na poli filmy pro nalezení filmu
+  const nalezenyFilm = filmy.find(film => film.id === hash);
+  
+  // Pokud nalezenyFilm není undefined, znamená to, že jsme našli film
+  if (nalezenyFilm) {
+	console.log('Nalezený film:', nalezenyFilm);
+  } else {
+	console.log('Film nebyl nalezen');
+  }
+
+  
+// Získání elementů na stránce
+const detailFilmu = document.getElementById('detail-filmu');
+const nazevFilmu = detailFilmu.querySelector('.card-title');
+const popisFilmu = detailFilmu.querySelector('.card-text');
+const plakatFilmu = detailFilmu.querySelector('.card-img-top');
+
+// Aktualizace obsahu
+nazevFilmu.textContent = nalezenyFilm.nazev;
+popisFilmu.textContent = nalezenyFilm.popis;
+plakatFilmu.src = nalezenyFilm.plakat.url;
+plakatFilmu.alt = nalezenyFilm.nazev;
+plakatFilmu.width = nalezenyFilm.plakat.sirka;
+plakatFilmu.height = nalezenyFilm.plakat.vyska;
+
+//Najděte prvek s id note-form
+const noteForm = document.querySelector('#note-form');
+
+//Zamezte výchozí chování prohlížeče
+document.addEventListener('DOMContentLoaded', function() {
+    const noteForm = document.querySelector('#note-form');
+
+    noteForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+	});
+});
+//Přidejte prvku třídu is-invalid,která ho zvýrazní červeně
+document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.querySelector('#message-input');
+
+    messageInput.addEventListener('blur', function() {
+        if (messageInput.value.trim() === '') {
+            messageInput.classList.add('is-invalid');
+        } else {
+            messageInput.classList.remove('is-invalid');
+        }
+    });
+
+	function validateMessageInput() {
+		if (messageInput.value.trim() === '') {
+			messageInput.classList.add('is-invalid');
+			messageInput.focus(); // Přesunutí kurzoru do textového pole
+		} else {
+			messageInput.classList.remove('is-invalid');
+		}
+	
+		if (!termsCheckbox.checked) {
+			termsCheckbox.classList.add('is-invalid');
+		} else {
+			termsCheckbox.classList.remove('is-invalid');
+		}
+	}
+});
+//Políčko s id terms-checkbox,přidejte políčku třídu is-invalid
+document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.querySelector('#message-input');
+    const termsCheckbox = document.querySelector('#terms-checkbox');
+
+    messageInput.addEventListener('blur', function() {
+        validateMessageInput();
+    });
+
+    termsCheckbox.addEventListener('change', function() {
+        validateMessageInput();
+    });
+
+    function validateMessageInput() {
+        if (messageInput.value.trim() === '' || !termsCheckbox.checked) {
+            messageInput.classList.add('is-invalid');
+        } else {
+            messageInput.classList.remove('is-invalid');
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.querySelector('#message-input');
+    const termsCheckbox = document.querySelector('#terms-checkbox');
+    const form = document.querySelector('#note-form');
+
+    messageInput.addEventListener('blur', function() {
+        validateMessageInput();
+    });
+
+    termsCheckbox.addEventListener('change', function() {
+        validateMessageInput();
+    });
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Zamezí výchozímu chování formuláře
+
+        if (messageInput.value.trim() === '' || !termsCheckbox.checked) {
+            validateMessageInput();
+        } else {
+            replaceFormContent();
+        }
+    });
+
+    function validateMessageInput() {
+        if (messageInput.value.trim() === '' || !termsCheckbox.checked) {
+            messageInput.classList.add('is-invalid');
+        } else {
+            messageInput.classList.remove('is-invalid');
+        }
+    }
+
+    function replaceFormContent() {
+        const messageText = messageInput.value.trim();
+        const newContent = `<p class="card-text">${messageText}</p>`;
+        form.innerHTML = newContent;
+    }
+});
+const newContent = `<p class="card-text">${messageText}</p>`;
+form.innerHTML = newContent;
