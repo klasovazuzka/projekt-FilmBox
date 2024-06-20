@@ -300,5 +300,5 @@ form.addEventListener('submit', function(event) {
 
     // Pokud uživatel splní obě podmínky, nahraďte HTML obsah formuláře za <p class="card-text">...</p>
     const cardText = `<p class="card-text">${inputValue}</p>`;
-    form.innerHTML = cardText;
+    form.innerHTML += cardText;
 });
