@@ -1,6 +1,6 @@
 const menuTlacitkoElm = document.querySelector('#menu-tlacitko');
 const menuPolozkyElm = document.querySelector('#menu-polozky');
-const fasElm = document.querySelector('.fas');
+
 
 const toggleMenu = () => {
 	if (menuPolozkyElm.classList.contains('show')) {
