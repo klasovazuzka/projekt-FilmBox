@@ -1,4 +1,4 @@
-/*const filmy = [
+const filmy = [
 	{
 		id: 'pelisky',
 		nazev: 'Pelíšky',
@@ -103,129 +103,136 @@
 			'Na zámek v podhůří Krkonoš přijíždí jeho nový majitel Štěpán se svojí snoubenkou, krásnou komtesou Blankou, a mladším bratrem Adamem. Cestou kočár nešťastně srazí kolemjdoucí dívku, Adam jí pomůže a ona se do něj zamiluje. Na zámku Adam objeví starou vlašskou knihu, která by měla obsahovat cestu k pokladům. Tajemné značky vlašské knihy však nedokáže vyluštit ani národopisec Jiráček, který v kraji sbírá pověsti a nevychází z údivu nad tím, že zdejší lidé stále věří v Krakonoše. Na zámku se objeví záhadný cizinec a nabídne Štěpánovi, že jej k pokladu za určitých podmínek dovede. Výprava do hor může začít. Naplní se Liduščina láska k Adamovi? Jakou záhadu skrývá starý obraz na zámku Hůrka a co strašlivého se v horách kdysi odehrálo? A kdo je vlastně Krakonoš a jaké je jeho největší tajemství? (csfd.cz, Česká televize)',
 		premiera: '2022-12-24',
 	},
-]*/
+]
 
-// Vyhledání prvku s id 'seznam-filmu'
-let seznamFilmu = document.querySelector('#seznam-filmu');
-
-// Zkontrolujte, zda prvek existuje
-if (seznamFilmu) {
-    // Vymazání vnitřního HTML
-    seznamFilmu.innerHTML = '';
-} else {
-    console.log('Prvek s id "seznam-filmu" nebyl nalezen.');
+// Funkce pro vytvoření HTML karty pro film
+function vytvorKartuFilmu(film) {
+    return `
+        <div class="film-card">
+            <img src="${film.plakat.url}" alt="${film.nazev}">
+            <h2>${film.nazev}</h2>
+            <p><strong>Ochutnávka:</strong> ${film.ochutnavka}</p>
+            <p>${film.popis}</p>
+            <p><strong>Premiéra:</strong> ${film.premiera}</p>
+        </div>
+    `;
 }
 
-// Rozšířené pole s filmy včetně filmu "Pupendo"
-const filmy = [
-    {
-        id: 'pelisky',
-        nazev: 'Pelíšky',
-        plakat: {
-            url: 'https://image.pmgstatic.com/cache/resized/w663/files/images/film/posters/165/059/165059101_56d52a.jpg',
-            sirka: 780,
-            vyska: 520,
-        },
-        ochutnavka: 'České drama z období 1968.',
-        popis: 'A je tu zpět jedna z nejúspěšnějších českých filmových komedií...',
-        premiera: '2019-04-08',
-    },
-    {
-        id: 'promlceno',
-        nazev: 'Promlčeno',
-        plakat: {
-            url: 'https://image.pmgstatic.com/cache/resized/w420/files/images/film/posters/164/987/164987945_c36f6f.jpg',
-            sirka: 780,
-            vyska: 520,
-        },
-        ochutnavka: 'Český krimi thriller s Karlem Rodenem.',
-        popis: 'Šokující živé vysílaní, které během chvíle změní životy několika nevinných lidí...',
-        premiera: '2022-04-28',
-    },
-    {
-        id: 'ona',
-        nazev: 'Ona',
-        plakat: {
-            url: 'https://image.pmgstatic.com/cache/resized/w420/files/images/film/posters/158/280/158280506_017bab.jpg',
-            sirka: 780,
-            vyska: 520,
-        },
-        ochutnavka: 'Romantické Sci-Fi z blízké budoucnosti',
-        popis: 'Děj snímku Her se odehrává v Los Angeles v nedaleké budoucnosti...',
-        premiera: '2013-12-18',
-    },
-    {
-        id: 'rrrrrrr',
-        nazev: 'RRRrrrr!!!',
-        plakat: {
-            url: 'https://image.pmgstatic.com/cache/resized/w663/files/images/film/posters/162/393/162393560_2aca32.jpg',
-            sirka: 780,
-            vyska: 520,
-        },
-        ochutnavka: 'Francouzská komedie.',
-        popis: 'Pred 35 000 rokmi v časoch, kedy bol boj o oheň už dávno vybojovaný...',
-        premiera: '2004-01-28',
-    },
-    {
-        id: 'pupendo',
-        nazev: 'Pupendo',
-        plakat: {
-            url: 'https://image.pmgstatic.com/cache/resized/w140/files/images/film/posters/000/029/29989_7e98d2.jpg',
-            sirka: 780,
-            vyska: 520,
-        },
-        ochutnavka: 'Česká filmová komedie.',
-        popis: 'Pupendo je film režiséra Jana Hřebejka z roku 2003, který pojednává o období...',
-        premiera: '2003-10-23',
-    }
-];
-
-/*if (seznamFilmu) {
+// Funkce pro vykreslení seznamu filmů
+function vykresliSeznamFilmu() {
+    const filmSeznamDiv = document.getElementById('film-seznam');
     filmy.forEach(film => {
-        let filmHtml = `
-        <div class="col">
-            <div class="card">
-                <img
-                    src="${film.plakat.url}"
-                    width="${film.plakat.sirka}"
-                    height="${film.plakat.vyska}"
-                    class="card-img-top"
-                    alt="plakát"
-                />
-                <div class="card-body">
-                    <h5 class="card-title">${film.nazev}</h5>
-                    <p class="card-text">${film.ochutnavka}</p>
-                    <a href="film.html?id=${film.id}" class="btn btn-primary">Přehrát</a>
-                </div>
-            </div>
-        </div>`;
-        seznamFilmu.innerHTML += filmHtml;
+        filmSeznamDiv.innerHTML += vytvorKartuFilmu(film);
     });
-} else {
-    console.log('Prvek s id "seznam-filmu" nebyl nalezen.');
-} */
-
-if (seznamFilmu) {
-    filmy.forEach(film => {
-        let filmHtml = `
-        <div class="col">
-            <div class="card">
-                <img
-                    src="${film.plakat.url}"
-                    width="${film.plakat.sirka}"
-                    height="${film.plakat.vyska}"
-                    class="card-img-top"
-                    alt="plakát"
-                />
-                <div class="card-body">
-                    <h5 class="card-title">${film.nazev}</h5>
-                    <p class="card-text">${film.ochutnavka}</p>
-                    <a href="film.html#${film.id}" class="btn btn-primary">Přehrát</a>
-                </div>
-            </div>
-        </div>`;
-        seznamFilmu.innerHTML += filmHtml;
-    });
-} else {
-    console.log('Prvek s id "seznam-filmu" nebyl nalezen.');
 }
+
+// Volání funkce pro vykreslení seznamu filmů po načtení stránky
+window.onload = vykresliSeznamFilmu;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const seznamFilmuElement = document.querySelector('#seznam-filmu');
+    console.log(seznamFilmuElement);
+});
+//Pomocí document.querySelector vyhledejte prvek s id seznam-filmu
+const seznamFilmuElement = document.querySelector('#seznam-filmu');
+
+//Vymažte tomuto prvku jeho vnitřní HTML
+seznamFilmuElement.innerHTML = '';
+
+const seznamFilmuElement = document.querySelector('#seznam-filmu');
+
+// Cyklus projde všechny filmy a přidá je do seznamu
+filmy.forEach(film => {
+    // Vytvoření elementu pro každý film
+    const filmElement = document.createElement('div');
+    filmElement.classList.add('col');
+
+    filmElement.innerHTML = `
+        <div class="card">
+            <img
+                src="${film.plakat.url}"
+                width="${film.plakat.sirka}"
+                height="${film.plakat.vyska}"
+                class="card-img-top"
+                alt="plakát"
+            />
+            <div class="card-body">
+                <h5 class="card-title">${film.nazev}</h5>
+                <p class="card-text">${film.ochutnavka}</p>
+                <a href="film.html?id=${film.id}" class="btn btn-primary">Přehrát</a>
+            </div>
+        </div>
+    `;
+
+    // Přidání vytvořeného elementu do seznamu filmů
+    seznamFilmuElement.appendChild(filmElement);
+});
+
+// Nový film Pupendo-bonus
+const pupendo = {
+    id: 'pupendo',
+    nazev: 'Pupendo',
+    plakat: {
+        url: 'https://image.pmgstatic.com/cache/resized/w140/files/images/film/posters/000/029/29989_7e98d2.jpg',
+        sirka: 780,
+        vyska: 520,
+    },
+    ochutnavka: 'Česká komedie režiséra Jana Hřebejka.',
+    popis: 'Pupendo je český komediální film režiséra Jana Hřebejka z roku 2003. Film se odehrává v roce 1980 v pražské čtvrti, kde začíná stavba sídliště jménem Pankrác. Děj je zasazen do doby normalizace, kdy je celá česká společnost rozdělena na příznivce a odpůrce komunistického režimu.',
+    premiera: '2003-09-04',
+};
+
+// Přidání filmu do pole `filmy`
+filmy.push(pupendo);
+
+// Kód pro přidání do HTML struktury 
+const seznamFilmuElement = document.querySelector('#seznam-filmu');
+
+filmy.forEach(film => {
+    const filmElement = document.createElement('div');
+    filmElement.classList.add('col');
+
+    filmElement.innerHTML = `
+        <div class="card">
+            <img
+                src="${film.plakat.url}"
+                width="${film.plakat.sirka}"
+                height="${film.plakat.vyska}"
+                class="card-img-top"
+                alt="plakát"
+            />
+            <div class="card-body">
+                <h5 class="card-title">${film.nazev}</h5>
+                <p class="card-text">${film.ochutnavka}</p>
+                <a href="film.html?id=${film.id}" class="btn btn-primary">Přehrát</a>
+            </div>
+        </div>
+    `;
+
+    seznamFilmuElement.appendChild(filmElement);
+});
+
+// Kód pro generování HTML struktury s upraveným odkazem
+filmy.forEach(film => {
+    const filmElement = document.createElement('div');
+    filmElement.classList.add('col');
+
+    filmElement.innerHTML = `
+        <div class="card">
+            <img
+                src="${film.plakat.url}"
+                width="${film.plakat.sirka}"
+                height="${film.plakat.vyska}"
+                class="card-img-top"
+                alt="plakát"
+            />
+            <div class="card-body">
+                <h5 class="card-title">${film.nazev}</h5>
+                <p class="card-text">${film.ochutnavka}</p>
+                <a href="film.html#${film.id}" class="btn btn-primary">Přehrát</a>
+            </div>
+        </div>
+    `;
+
+    seznamFilmuElement.appendChild(filmElement);
+});

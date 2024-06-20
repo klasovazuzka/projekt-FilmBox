@@ -104,141 +104,201 @@ const filmy = [
 		premiera: '2022-12-24',
 	},
 ]
-// Funkce pro zjištění filmu na základě location.hash
-function zjistitFilm() {
-	// Získání hash z URL a odříznutí znaku #
-	const hash = location.hash.slice(1);
-	
-	// Vyhledání filmu podle ID
-	const film = filmy.find(film => film.id === hash);
-	
-	// Pokud film existuje, vrátíme ho, jinak vrátíme zprávu, že film nebyl nalezen
-	if (film) {
-	  return film;
-	} else {
-	  return 'Film nebyl nalezen';
-	}}  
-	// Použití metody find na poli filmy pro nalezení filmu
-  const nalezenyFilm = filmy.find(film => film.id === hash);
-  
-  // Pokud nalezenyFilm není undefined, znamená to, že jsme našli film
-  if (nalezenyFilm) {
-	console.log('Nalezený film:', nalezenyFilm);
-  } else {
-	console.log('Film nebyl nalezen');
-  }
 
-  
-// Získání elementů na stránce
-const detailFilmu = document.getElementById('detail-filmu');
-const nazevFilmu = detailFilmu.querySelector('.card-title');
-const popisFilmu = detailFilmu.querySelector('.card-text');
-const plakatFilmu = detailFilmu.querySelector('.card-img-top');
+/*Získání ID z URL hash bez mřížky
+const filmIdFromHash = window.location.hash.substring(1);
 
-// Aktualizace obsahu
-nazevFilmu.textContent = nalezenyFilm.nazev;
-popisFilmu.textContent = nalezenyFilm.popis;
-plakatFilmu.src = nalezenyFilm.plakat.url;
-plakatFilmu.alt = nalezenyFilm.nazev;
-plakatFilmu.width = nalezenyFilm.plakat.sirka;
-plakatFilmu.height = nalezenyFilm.plakat.vyska;
+// Proměnná pro uložení nalezeného filmu
+let vybranyFilm = null;
 
+// Projdeme všechny filmy v poli
+for (let i = 0; i < filmy.length; i++) {
+    if (filmy[i].id === filmIdFromHash) {
+        vybranyFilm = filmy[i];
+        break;  // Film nalezen, můžeme ukončit cyklus
+    }
+}
+
+if (vybranyFilm) {
+    console.log('Uživatel se chce dívat na film:', vybranyFilm.nazev);
+    console.log('Popis filmu:', vybranyFilm.popis);
+} else {
+    console.log('Film s daným ID nebyl nalezen.');
+}*/
+/*Získání ID z URL hash bez mřížky
+const filmIdFromHash = window.location.hash.substring(1);
+
+// Hledání filmu v poli filmy
+const vybranyFilm = filmy.find(film => film.id === filmIdFromHash);
+
+if (vybranyFilm) {
+    console.log('Uživatel se chce dívat na film:', vybranyFilm.nazev);
+    console.log('Popis filmu:', vybranyFilm.popis);
+} else {
+    console.log('Film s daným ID nebyl nalezen.');
+}*/
+
+/*Získání ID z URL hash bez mřížky
+const filmIdFromHash = window.location.hash.substring(1);
+
+//Hledání filmu v poli filmy
+const vybranyFilm = filmy.find(film => film.id === filmIdFromHash);
+
+if (vybranyFilm) {
+    console.log('Uživatel se chce dívat na film:', vybranyFilm.nazev);
+    console.log('Popis filmu:', vybranyFilm.popis);
+} else {
+    console.log('Film s daným ID nebyl nalezen.');
+}*/
+
+const vyhledaneId = location.hash.slice(1); // Odstranění '#' z hashu
+const vybranyFilm = filmy.find(film => film.id === vyhledaneId);
+
+if (vybranyFilm) {
+    // Získání elementů, do kterých chceme vepsat informace
+    const nazevElement = document.querySelector('#detail-filmu .nazev');
+    const popisElement = document.querySelector('#detail-filmu .popis');
+    const plakatElement = document.querySelector('#detail-filmu .plakat');
+    const cardTitleElement = document.querySelector('#detail-filmu .card-title');
+    const cardTextElement = document.querySelector('#detail-filmu .card-text');
+
+    // Vepsání informací o filmu do elementů
+    nazevElement.textContent = vybranyFilm.nazev;
+    popisElement.textContent = vybranyFilm.popis;
+    plakatElement.src = vybranyFilm.plakat.url;
+    plakatElement.width = vybranyFilm.plakat.sirka;
+    plakatElement.height = vybranyFilm.plakat.vyska;
+    plakatElement.alt = `Plakát ${vybranyFilm.nazev}`;
+
+    cardTitleElement.textContent = vybranyFilm.nazev;
+    cardTextElement.textContent = vybranyFilm.popis;
+} else {
+    console.log(`Film s ID ${vyhledaneId} nebyl nalezen.`);
+}
 //Najděte prvek s id note-form
-const noteForm = document.querySelector('#note-form');
+const noteFormElement = document.querySelector('#note-form');
 
-//Zamezte výchozí chování prohlížeče
-document.addEventListener('DOMContentLoaded', function() {
-    const noteForm = document.querySelector('#note-form');
+// Přidejte posluchač události submit na formulář
+noteForm.addEventListener('submit', function(event) {
+    // Zamezte výchozímu chování prohlížeče
+    event.preventDefault();
 
-    noteForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-	});
+    // Příklad: získání hodnot z formuláře
+    const formData = new FormData(noteForm);
+    const title = formData.get('title');
+    const content = formData.get('content');
+
+    // Příklad: zobrazení zprávy v konzoli
+    console.log('Titulek:', title);
+    console.log('Obsah:', content);
 });
-//Přidejte prvku třídu is-invalid,která ho zvýrazní červeně
-document.addEventListener('DOMContentLoaded', function() {
-    const messageInput = document.querySelector('#message-input');
 
-    messageInput.addEventListener('blur', function() {
-        if (messageInput.value.trim() === '') {
-            messageInput.classList.add('is-invalid');
-        } else {
-            messageInput.classList.remove('is-invalid');
-        }
-    });
+/*Najděte textové pole pomocí ID
+const messageInput = document.querySelector('#message-input');
 
-	function validateMessageInput() {
-		if (messageInput.value.trim() === '') {
-			messageInput.classList.add('is-invalid');
-			messageInput.focus(); // Přesunutí kurzoru do textového pole
-		} else {
-			messageInput.classList.remove('is-invalid');
-		}
-	
-		if (!termsCheckbox.checked) {
-			termsCheckbox.classList.add('is-invalid');
-		} else {
-			termsCheckbox.classList.remove('is-invalid');
-		}
-	}
-});
-//Políčko s id terms-checkbox,přidejte políčku třídu is-invalid
-document.addEventListener('DOMContentLoaded', function() {
-    const messageInput = document.querySelector('#message-input');
-    const termsCheckbox = document.querySelector('#terms-checkbox');
+// Najděte textové pole a checkbox pomocí jejich ID
+const messageInput = document.querySelector('#message-input');
+const termsCheckbox = document.querySelector('#terms-checkbox');
 
-    messageInput.addEventListener('blur', function() {
-        validateMessageInput();
-    });
+// Přidejte posluchač události 'input' na textové pole
+messageInput.addEventListener('input', function() {
+    // Získání hodnoty z textového pole
+    const inputValue = messageInput.value.trim(); // .trim() odstraní případné mezery na začátku a konci
 
-    termsCheckbox.addEventListener('change', function() {
-        validateMessageInput();
-    });
-
-    function validateMessageInput() {
-        if (messageInput.value.trim() === '' || !termsCheckbox.checked) {
-            messageInput.classList.add('is-invalid');
-        } else {
-            messageInput.classList.remove('is-invalid');
-        }
+    // Ověření, zda je textové pole prázdné nebo obsahuje text
+    if (inputValue === '') {
+        // Přidání třídy 'is-invalid', pokud je textové pole prázdné
+        messageInput.classList.add('is-invalid');
+        console.log('Textové pole je prázdné.');
+    } else {
+        // Odebrání třídy 'is-invalid', pokud je textové pole vyplněné
+        messageInput.classList.remove('is-invalid');
+        console.log('Uživatel napsal něco do textového pole.');
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const messageInput = document.querySelector('#message-input');
-    const termsCheckbox = document.querySelector('#terms-checkbox');
-    const form = document.querySelector('#note-form');
+// Přidejte posluchač události 'change' na checkbox
+termsCheckbox.addEventListener('change', function() {
+    // Ověření, zda je checkbox zaškrtnutý
+    if (termsCheckbox.checked) {
+        // Odebrání třídy 'is-invalid', pokud je checkbox zaškrtnutý
+        termsCheckbox.classList.remove('is-invalid');
+        console.log('Uživatel souhlasil s podmínkami.');
+    } else {
+        // Přidání třídy 'is-invalid', pokud checkbox není zaškrtnutý
+        termsCheckbox.classList.add('is-invalid');
+        console.log('Uživatel nesouhlasil s podmínkami.');
+    }
+});*/
+/*Najděte textové pole, checkbox a formulář pomocí jejich ID
+const messageInput = document.querySelector('#message-input');
+const termsCheckbox = document.querySelector('#terms-checkbox');
+const form = document.querySelector('form');
 
-    messageInput.addEventListener('blur', function() {
-        validateMessageInput();
-    });
+// Přidejte posluchač události 'submit' na formulář
+form.addEventListener('submit', function(event) {
+    // Zastavíme výchozí chování formuláře, abychom mohli zpracovat podmínky 
+    event.preventDefault();
 
-    termsCheckbox.addEventListener('change', function() {
-        validateMessageInput();
-    });
+    // Získání hodnoty z textového pole
+    const inputValue = messageInput.value.trim(); // .trim() odstraní případné mezery na začátku a konci
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); // Zamezí výchozímu chování formuláře
-
-        if (messageInput.value.trim() === '' || !termsCheckbox.checked) {
-            validateMessageInput();
-        } else {
-            replaceFormContent();
-        }
-    });
-
-    function validateMessageInput() {
-        if (messageInput.value.trim() === '' || !termsCheckbox.checked) {
-            messageInput.classList.add('is-invalid');
-        } else {
-            messageInput.classList.remove('is-invalid');
-        }
+    // Ověření, zda je textové pole prázdné
+    if (inputValue === '') {
+        // Přidání třídy 'is-invalid', pokud je textové pole prázdné
+        messageInput.classList.add('is-invalid');
+        console.log('Textové pole je prázdné.');
+        return; // Ukončíme funkci, pokud textové pole není vyplněné
     }
 
-    function replaceFormContent() {
-        const messageText = messageInput.value.trim();
-        const newContent = `<p class="card-text">${messageText}</p>`;
-        form.innerHTML = newContent;
+    // Ověření, zda je checkbox zaškrtnutý
+    if (!termsCheckbox.checked) {
+        // Přidání třídy 'is-invalid', pokud checkbox není zaškrtnutý
+        termsCheckbox.classList.add('is-invalid');
+        console.log('Uživatel nesouhlasil s podmínkami.');
+        return; // Ukončíme funkci, pokud podmínky nejsou zaškrtnuté
     }
+
+    // Pokud uživatel splní obě podmínky, nahraďte HTML obsah formuláře za <p class="card-text">...</p>
+    const cardText = `<p class="card-text">${inputValue}</p>`;
+    form.innerHTML = cardText;
+});*/
+// Najděte textové pole, checkbox a formulář pomocí jejich ID
+const messageInput = document.querySelector('#message-input');
+const termsCheckbox = document.querySelector('#terms-checkbox');
+const form = document.querySelector('form');
+
+// Přidejte posluchač události 'submit' na formulář
+form.addEventListener('submit', function(event) {
+    // Zastavíme výchozí chování formuláře, abychom mohli zpracovat podmínky
+    event.preventDefault();
+
+    // Získání hodnoty z textového pole
+    const inputValue = messageInput.value.trim(); // .trim() odstraní případné mezery na začátku a konci
+
+    // Ověření, zda je textové pole prázdné
+    if (inputValue === '') {
+        // Přidání třídy 'is-invalid' a focus na textové pole
+        messageInput.classList.add('is-invalid');
+        messageInput.focus(); // Přesun kurzoru na textové pole
+        console.log('Textové pole je prázdné.');
+        return; // Ukončíme funkci, pokud textové pole není vyplněné
+    } else {
+        messageInput.classList.remove('is-invalid'); // Odstraníme třídu 'is-invalid', pokud není textové pole prázdné
+    }
+
+    // Ověření, zda je checkbox zaškrtnutý
+    if (!termsCheckbox.checked) {
+        // Přidání třídy 'is-invalid' a focus na checkbox
+        termsCheckbox.classList.add('is-invalid');
+        termsCheckbox.focus(); // Přesun focusu na checkbox
+        console.log('Uživatel nesouhlasil s podmínkami.');
+        return; // Ukončíme funkci, pokud podmínky nejsou zaškrtnuté
+    } else {
+        termsCheckbox.classList.remove('is-invalid'); // Odstraníme třídu 'is-invalid', pokud je checkbox zaškrtnutý
+    }
+
+    // Pokud uživatel splní obě podmínky, nahraďte HTML obsah formuláře za <p class="card-text">...</p>
+    const cardText = `<p class="card-text">${inputValue}</p>`;
+    form.innerHTML = cardText;
 });
-const newContent = `<p class="card-text">${messageText}</p>`;
-form.innerHTML = newContent;
