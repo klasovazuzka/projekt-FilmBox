@@ -105,134 +105,192 @@ const filmy = [
 	},
 ]
 
-// Funkce pro vytvoření HTML karty pro film
-function vytvorKartuFilmu(film) {
-    return `
-        <div class="film-card">
-            <img src="${film.plakat.url}" alt="${film.nazev}">
-            <h2>${film.nazev}</h2>
-            <p><strong>Ochutnávka:</strong> ${film.ochutnavka}</p>
-            <p>${film.popis}</p>
-            <p><strong>Premiéra:</strong> ${film.premiera}</p>
-        </div>
-    `;
+filmy.unshift( 
+	{
+		id: 'pupendo',
+		nazev: 'Pupendo',
+		plakat: {
+			url: 'https://images.app.goo.gl/yStm9UmhcsMsUayZ7',
+			sirka: 780,
+			vyska: 520,
+		},
+		ochutnavka: 'Česká komedie režiséra Jana Hřebejka.',
+		popis: 'Pupendo je český komediální film režiséra Jana Hřebejka z roku 2003. Film se odehrává v roce 1980 v pražské čtvrti, kde začíná stavba sídliště jménem Pankrác. Děj je zasazen do doby normalizace, kdy je celá česká společnost rozdělena na příznivce a odpůrce komunistického režimu.',
+		premiera: '2003-09-04',
+	})
+
+const seznamFilmuElm = document.querySelector('#seznam-filmu');
+
+if (window.location.href.slice(window.location.href.length - 11,window.location.href.length) === 'seznam.html') {
+	console.log(window.location.href.slice(window.location.href.length - 11,window.location.href.length));
+	seznamFilmuElm.innerHTML = ``;
+
+	filmy.forEach((film) => {
+		seznamFilmuElm.innerHTML += `
+			<div class="col">
+			<div class="card h-100 d-flex flex-column justify-content-between ">
+				<div class="card">
+					<img
+						src="${film.plakat.url}"
+						width="${film.sirka}"
+						height="${film.vyska}"
+						class="card-img-top flex-grow-1"
+						alt="plakát"
+					/>
+					<div class="card-body flex-grow-0 flex-shrink-0 mt-auto">
+						<h5 class="card-title">${film.nazev}</h5>
+							<p class="card-text">${film.ochutnavka}</p>
+							<a href="film.html#${film.id}" class="btn btn-primary">Přehrát</a>
+					</div>
+				</div>
+			</div>
+		`
+	});
 }
+const detailFilmuElm = document.querySelector('#detail-filmu');
 
-// Funkce pro vykreslení seznamu filmů
-function vykresliSeznamFilmu() {
-    const filmSeznamDiv = document.getElementById('film-seznam');
-    filmy.forEach(film => {
-        filmSeznamDiv.innerHTML += vytvorKartuFilmu(film);
-    });
+if (window.location.href.indexOf('film.html') > 0) {
+	//console.log(window.location.href.indexOf('film.html'));
+	//detailFilmuElm.innerHTML = ``;
+
+	//console.log('Location hash: ' + location.hash.slice(1,location.hash.length));
+
+	filmy.forEach((film) => {
+		if (film.id === location.hash.substring(1)) {
+
+			const premieraDate = dayjs(film.premiera).format('D. M. YYYY');
+			const days = dayjs(film.premiera).diff(dayjs(), 'days');
+			//const dayName = 'Den';
+
+			//console.log(days);
+			//console.log(premieraDate);
+			//let premieraElm = document.querySelector('#premiera');
+			//console.log(premieraElm);
+			let message = '';
+			if (days < -1) {
+				//console.log('Již byla premiéra');
+				if (days === 1) {
+					//console.log('x DNEM');
+					message = `Premiéra <strong>${premieraDate}</strong>, což bylo před ${Math.abs(days)} dnem.`;
+				} else {
+					//console.log('x DNY');
+					message = `Premiéra <strong>${premieraDate}</strong>, což bylo před ${Math.abs(days)} dny.`;
+				}
+			} else if (days > 1) {
+				console.log('Teprve bude premiéra');
+				if (days === 1) {
+					message = `Premiéra <strong>${premieraDate}</strong>, bude za ${days} den.`;
+				} else if (days >= 2 && days <= 4) {
+					message = `Premiéra <strong>${premieraDate}</strong>, bude za ${days} dny.`;
+				} else {
+					message = `Premiéra <strong>${premieraDate}</strong>, bude za ${days} dní.`;
+				}
+			} else {
+				console.log('Dnes je premiéra');
+				message  = `Premiéra <strong>${premieraDate}</strong>, dnes je premiéra.`;
+	
+			}
+			//console.log('Film.id: ' + film.id);
+			detailFilmuElm.innerHTML = `
+			<div class="row g-0">
+			<div class="col-md-5">
+				<img
+					src="${film.plakat.url}"
+					alt="plakát"
+					class="img-fluid rounded-start"
+					width="${film.plakat.sirka}"
+					height="${film.plakat.vyska}"
+				/>
+			</div>
+			<div class="col-md-7">
+				<div class="card-body">
+					<h5 class="card-title">${film.nazev}</h5>
+					<p class="card-text">${film.popis}</p>
+					<!--<p class="card-text">
+						<small class="text-muted" id="premiera"
+							>Premiéra <strong>${dayjs(film.premiera).format('D. M. YYYY')}</strong>, což je za ${dayjs(film.premiera).diff(dayjs(), 'days')}
+							dní.</small>
+					</p>-->
+					<p class="card-text">
+					<small class="text-muted" id="premiera"
+						>${message}</small>
+					</p>
+					<h6>Hodnocení</h6>
+					<div class="stars">
+						<button
+							class="far fa-star button-star"
+							data-mdb-toggle="tooltip"
+							title="Nic moc"
+						>
+							1
+						</button>
+						<button
+							class="far fa-star button-star"
+							data-mdb-toggle="tooltip"
+							title="Ucházející"
+						>
+							2
+						</button>
+						<button
+							class="far fa-star button-star"
+							data-mdb-toggle="tooltip"
+							title="Dobrý"
+						>
+							3
+						</button>
+						<button
+							class="far fa-star button-star"
+							data-mdb-toggle="tooltip"
+							title="Skvělý"
+						>
+							4
+						</button>
+						<button
+							class="far fa-star button-star"
+							data-mdb-toggle="tooltip"
+							title="Úžasný"
+						>
+							5
+						</button>
+					</div>
+	
+					<h6 class="mt-4">Poznámka</h6>
+					<form id="note-form">
+						<div class="row">
+							<div class="col-md-6 col-lg-7 col-xl-8 mb-2">
+								<div class="form-outline">
+									<textarea
+										class="form-control"
+										id="message-input"
+										rows="4"
+									></textarea>
+									<label class="form-label" for="message-input"
+										>Text poznámky</label
+										>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-5 col-xl-4">
+								<div class="form-check d-flex justify-content-center mb-2">
+									<input
+										class="form-check-input me-2 mb-2"
+										type="checkbox"
+										value=""
+										id="terms-checkbox"
+									/>
+									<label class="form-check-label" for="terms-checkbox">
+										Souhlasím se všeobecnými podmínky užívání.
+									</label>
+								</div>
+								<button type="submit" class="btn btn-primary btn-block">
+									Uložit
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+			`;
+		}
+	});
 }
-
-// Volání funkce pro vykreslení seznamu filmů po načtení stránky
-window.onload = vykresliSeznamFilmu;
-
-document.addEventListener('DOMContentLoaded', () => {
-    const seznamFilmuElement = document.querySelector('#seznam-filmu');
-    console.log(seznamFilmuElement);
-});
-//Pomocí document.querySelector vyhledejte prvek s id seznam-filmu
-const seznamFilmuElement = document.querySelector('#seznam-filmu');
-
-//Vymažte tomuto prvku jeho vnitřní HTML
-seznamFilmuElement.innerHTML = '';
-
-const seznamFilmuElement = document.querySelector('#seznam-filmu');
-
-// Cyklus projde všechny filmy a přidá je do seznamu
-filmy.forEach(film => {
-    // Vytvoření elementu pro každý film
-    const filmElement = document.createElement('div');
-    filmElement.classList.add('col');
-
-    filmElement.innerHTML = `
-        <div class="card">
-            <img
-                src="${film.plakat.url}"
-                width="${film.plakat.sirka}"
-                height="${film.plakat.vyska}"
-                class="card-img-top"
-                alt="plakát"
-            />
-            <div class="card-body">
-                <h5 class="card-title">${film.nazev}</h5>
-                <p class="card-text">${film.ochutnavka}</p>
-                <a href="film.html?id=${film.id}" class="btn btn-primary">Přehrát</a>
-            </div>
-        </div>
-    `;
-
-    // Přidání vytvořeného elementu do seznamu filmů
-    seznamFilmuElement.appendChild(filmElement);
-});
-
-// Nový film Pupendo-bonus
-const pupendo = {
-    id: 'pupendo',
-    nazev: 'Pupendo',
-    plakat: {
-        url: 'https://image.pmgstatic.com/cache/resized/w140/files/images/film/posters/000/029/29989_7e98d2.jpg',
-        sirka: 780,
-        vyska: 520,
-    },
-    ochutnavka: 'Česká komedie režiséra Jana Hřebejka.',
-    popis: 'Pupendo je český komediální film režiséra Jana Hřebejka z roku 2003. Film se odehrává v roce 1980 v pražské čtvrti, kde začíná stavba sídliště jménem Pankrác. Děj je zasazen do doby normalizace, kdy je celá česká společnost rozdělena na příznivce a odpůrce komunistického režimu.',
-    premiera: '2003-09-04',
-};
-
-// Přidání filmu do pole `filmy`
-filmy.push(pupendo);
-
-// Kód pro přidání do HTML struktury 
-const seznamFilmuElement = document.querySelector('#seznam-filmu');
-
-filmy.forEach(film => {
-    const filmElement = document.createElement('div');
-    filmElement.classList.add('col');
-
-    filmElement.innerHTML = `
-        <div class="card">
-            <img
-                src="${film.plakat.url}"
-                width="${film.plakat.sirka}"
-                height="${film.plakat.vyska}"
-                class="card-img-top"
-                alt="plakát"
-            />
-            <div class="card-body">
-                <h5 class="card-title">${film.nazev}</h5>
-                <p class="card-text">${film.ochutnavka}</p>
-                <a href="film.html?id=${film.id}" class="btn btn-primary">Přehrát</a>
-            </div>
-        </div>
-    `;
-
-    seznamFilmuElement.appendChild(filmElement);
-});
-
-// Kód pro generování HTML struktury s upraveným odkazem
-filmy.forEach(film => {
-    const filmElement = document.createElement('div');
-    filmElement.classList.add('col');
-
-    filmElement.innerHTML = `
-        <div class="card">
-            <img
-                src="${film.plakat.url}"
-                width="${film.plakat.sirka}"
-                height="${film.plakat.vyska}"
-                class="card-img-top"
-                alt="plakát"
-            />
-            <div class="card-body">
-                <h5 class="card-title">${film.nazev}</h5>
-                <p class="card-text">${film.ochutnavka}</p>
-                <a href="film.html#${film.id}" class="btn btn-primary">Přehrát</a>
-            </div>
-        </div>
-    `;
-
-    seznamFilmuElement.appendChild(filmElement);
-});
